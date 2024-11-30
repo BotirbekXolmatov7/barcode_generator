@@ -1,0 +1,54 @@
+<div class="barcode-generator">
+  <form [formGroup]="barcodeForm">
+    <div class="form-group">
+      <label for="baseBarcode">Barcode (Any digits):</label>
+      <input
+        id="baseBarcode"
+        type="text"
+        formControlName="baseBarcode"
+        placeholder="Enter barcode"
+        (keydown)="valueLengthMeter('baseBarcode', 12)"
+      />
+      <p id="baseBarcode" class="text-xs">0/12</p>
+      <div
+        *ngIf="
+          barcodeForm.controls['baseBarcode'].invalid &&
+          barcodeForm.controls['baseBarcode'].touched
+        "
+      >
+        <small class="error">Please enter a barcode.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="barcodeCount">Number of Codes:</label>
+      <input
+        id="barcodeCount"
+        type="number"
+        formControlName="count"
+        placeholder="Enter number of barcodes"
+        min="1"
+      />
+    </div>
+  </form>
+
+  <div class="flex justif">
+    <button
+      class="me-3"
+      [disabled]="barcodeForm.invalid"
+      (click)="generateBarcodes()"
+    >
+      Generate
+    </button>
+    <button (click)="printBarcodes()">Print</button>
+  </div>
+
+  <div *ngIf="barcodes.length > 0" class="barcode-list">
+    <h3>Output</h3>
+    <div class="barcode-grid">
+      <div *ngFor="let barcode of barcodes; let i = index" class="barcode-item">
+        <svg [id]="'barcode-' + i"></svg>
+      </div>
+    </div>
+  </div>
+</div>
